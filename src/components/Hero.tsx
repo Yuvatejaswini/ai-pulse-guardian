@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Activity } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-wearable.jpg";
 
 export const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4 py-20 grid lg:grid-cols-2 gap-12 items-center">
@@ -24,8 +27,12 @@ export const Hero = () => {
           </p>
           
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity shadow-lg">
-              Get Started
+            <Button 
+              size="lg" 
+              onClick={() => navigate("/dashboard")}
+              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity shadow-lg"
+            >
+              View Dashboard
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button size="lg" variant="outline" className="border-primary/30 hover:bg-primary/5">
