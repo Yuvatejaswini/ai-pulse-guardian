@@ -1,5 +1,6 @@
 import { Heart, Brain, Zap, Shield, TrendingUp, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const features = [
   {
@@ -35,10 +36,17 @@ const features = [
 ];
 
 export const Features = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation(0.1);
+  
   return (
     <section className="py-24 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div 
+          ref={headerRef}
+          className={`text-center max-w-3xl mx-auto mb-16 transition-all duration-700 ${
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
             Powerful Features for
             <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -51,18 +59,26 @@ export const Features = () => {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <Card 
-              key={index}
-              className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-border/50 bg-card/50 backdrop-blur-sm"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6 shadow-lg">
-                <feature.icon className="w-7 h-7 text-primary-foreground" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-            </Card>
-          ))}
+          {features.map((feature, index) => {
+            const { ref, isVisible } = useScrollAnimation(0.1);
+            
+            return (
+              <Card 
+                key={index}
+                ref={ref}
+                className={`p-8 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-border/50 bg-card/50 backdrop-blur-sm group cursor-pointer ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300">
+                  <feature.icon className="w-7 h-7 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>
